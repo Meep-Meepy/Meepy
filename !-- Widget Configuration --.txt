@@ -1,0 +1,56 @@
+<!-- Widget Configuration -->
+<script>
+    window.ChatWidgetConfig = {
+        webhook: {
+            url: "https://cxk1.app.n8n.cloud/webhook/54a06a7f-fa96-4ad2-86ae-41172400426b/chat", // Make sure to replace this with your actual webhook URL
+            route: 'general'
+        },
+        branding: {
+            logo: 'https://yourwebsite.com/path-to-your-logo.png', // Replace with a real image URL
+            name: 'Meep AI',
+            welcometext: 'Ask me anything :D',
+            responseTimeText: 'Click the button below to start chatting'
+        },
+        style: {
+            primaryColour: '#010981', // Fixed 
+            secondaryColour: '#059669',
+            position: 'right',
+            backgroundColour: '#ffffff', // Fixed invalid hex
+            frontColour: '#1e2937' // Fixed invalid hex
+        },
+        // Add suggestions that users can click (optional)
+        suggestions: ['What are your hours?', 'Can I speak to support?', 'Tell me a joke']
+    };
+</script>
+
+<!-- Fix: Corrected typo from 'scr' to 'src' -->
+<script src="https://cdn.jsdelivr.net/gh/funtastic418/chat-widget@main/chat-widget.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const checkExist = setInterval(() => {
+            const chatContainer = document.querySelector(".chat-container");
+            const chatButton = document.querySelector(".chat-button");
+
+            if (chatContainer && chatButton) {
+                clearInterval(checkExist);
+
+                chatButton.addEventListener("click", () => {
+                    chatContainer.classList.toggle("fullscreen-chat");
+                });
+            }
+        }, 300);
+    });
+</script>
+
+<style>
+    .fullscreen-chat {
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        width: 100vw !important;
+        height: 100vh !important;
+        z-index: 9999 !important;
+        border-radius: 0 !important;
+        max-height: none !important;
+    }
+</style>
