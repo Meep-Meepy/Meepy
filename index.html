@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Meep AI Chat Widget</title>
+    <style>
+        /* Fullscreen Chat Styles */
+        .fullscreen-chat {
+            position: fixed !important;
+            top: 0;
+            left: 0;
+            width: 100vw !important;
+            height: 100vh !important;
+            z-index: 9999 !important;
+            border-radius: 0 !important;
+            max-height: none !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Chatbot Widget Configuration -->
+    <script>
+        window.ChatWidgetConfig = {
+            webhook: {
+                url: "https://cxk1.app.n8n.cloud/webhook/54a06a7f-fa96-4ad2-86ae-41172400426b/chat",
+                route: 'general'
+            },
+            branding: {
+                logo: 'https://yourwebsite.com/path-to-your-logo.png', // Replace with your logo
+                name: 'Meep AI',
+                welcometext: 'Ask me anything :D',
+                responseTimeText: 'Click the button below to start chatting'
+            },
+            style: {
+                primaryColour: '#010981',
+                secondaryColour: '#059669',
+                position: 'right',
+                backgroundColour: '#ffffff',
+                frontColour: '#1e2937'
+            },
+            suggestions: ['What are your hours?', 'Can I speak to support?', 'Tell me a joke']
+        };
+    </script>
+
+    <!-- Chat Widget Script -->
+    <script src="https://cdn.jsdelivr.net/gh/funtastic418/chat-widget@main/chat-widget.js"></script>
+
+    <!-- Enable Fullscreen Mode on Mobile -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const checkExist = setInterval(() => {
+                const chatContainer = document.querySelector(".chat-container");
+                const chatButton = document.querySelector(".chat-button");
+
+                if (chatContainer && chatButton) {
+                    clearInterval(checkExist);
+                    chatButton.addEventListener("click", () => {
+                        chatContainer.classList.toggle("fullscreen-chat");
+                    });
+                }
+            }, 300);
+        });
+    </script>
+
+    <!-- Intercept fetch to inject siteDomain -->
+    <script>
+        (function() {
+            const originalFetch = window.fetch;
+            window.fetch = function(input, init) {
+                try {
+                    if (typeof init === 'object' && init.body) {
+                        const body = JSON.parse(init.body);
+                        // Only modify chat messages
+                        if (body.chatInput) {
+                            body.siteDomain = window.location.hostname;
+                            init.body = JSON.stringify(body);
+                        }
+                    }
+                } catch(e) {
+                    // Ignore parsing errors
+                }
+                return originalFetch(input, init);
+            };
+        })();
+    </script>
+</body>
+</html>
